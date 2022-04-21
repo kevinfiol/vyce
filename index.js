@@ -23,7 +23,7 @@ export const combine = (f, xs) => {
   let rec = s(calc());
   xs.map(x =>
     rec.dep(
-      x.sub(v => rec.set(calc()))
+      x.sub(_ => rec.set(calc()))
     )
   );
   return rec;
