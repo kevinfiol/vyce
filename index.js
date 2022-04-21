@@ -13,9 +13,7 @@ export const store = init => {
     },
     end: () => {
       subs = [];
-      unsubs.map(u => !u());
-      unsubs = [];
-      x = undefined;
+      unsubs = unsubs.filter(u => !u());
     }
   };
 };
