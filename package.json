@@ -1,0 +1,34 @@
+{
+  "name": "vyce",
+  "version": "0.1.0",
+  "author": "kevinfiol",
+  "license": "MIT",
+  "repository": "kevinfiol/vyce",
+  "type": "module",
+  "description": "KISS store utility",
+  "main": "dist/vyce.cjs",
+  "module": "dist/vyce.js",
+  "unpkg": "dist/vyce.min.js",
+  "types": "index.d.ts",
+  "umd:name": "vyce",
+  "scripts": {
+    "test": "node test.js",
+    "build": "bundt index.js && node test.js"
+  },
+  "engines": {
+    "node": ">=12.x"
+  },
+  "files": [
+    "*.d.ts",
+    "dist"
+  ],
+  "devDependencies": {
+    "bundt": "^1.1.5",
+    "fantestic": "^0.0.3"
+  },
+  "keywords": [
+    "vanillajs",
+    "store",
+    "state"
+  ]
+}
