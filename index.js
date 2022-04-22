@@ -23,7 +23,6 @@ export function store(init) {
     end: _ => {
       subs = [];
       deps[id] = deps[id].filter(u => !u());
-      delete deps[id];
     }
   };
 };

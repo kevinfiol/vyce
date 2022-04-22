@@ -23,8 +23,7 @@
     "dist"
   ],
   "devDependencies": {
-    "bundt": "^1.1.5",
-    "fantestic": "^0.0.3"
+    "bundt": "^1.1.5"
   },
   "keywords": [
     "vanillajs",

@@ -2,11 +2,9 @@ lockfileVersion: 5.3
 
 specifiers:
   bundt: ^1.1.5
-  fantestic: ^0.0.3
 
 devDependencies:
   bundt: 1.1.5
-  fantestic: 0.0.3
 
 packages:
 
@@ -27,10 +25,6 @@ packages:
 
   /commander/2.20.3:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
-    dev: true
-
-  /fantestic/0.0.3:
-    resolution: {integrity: sha512-JwUftR5aS6F/0+0K9vBO8062r1ljlO2kawD8XxqaMTt9z4OT2ZcNTwDKrKb+LESCLgxD8KhGrVmhSRkbv0FtXw==}
     dev: true
 
   /kleur/4.1.4:
