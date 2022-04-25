@@ -1,6 +1,6 @@
 # vyce
 
-A tiny store you can use to build tidy relationships.
+A [tiny](https://bundlephobia.com/package/vyce) store you can use to build tidy relationships.
 
 ```js
 import { store, computed } from 'vyce';
@@ -22,20 +22,40 @@ authors.set(prev => [
 ]);
 
 youngAuthors.get()
-/*
-[
- { name: 'haruki', age: 25 },
- { name: 'james', age: 32 },
- { name: 'david', age: 28 }
-]
-*/
+// [
+//  { name: 'haruki', age: 25 },
+//  { name: 'james', age: 32 },
+//  { name: 'david', age: 28 }
+// ]
 ```
 
 ## Install
 
+Node
 ```bash
 npm install vyce
 ```
+
+Deno
+```js
+import { store, computed } from 'https://deno.land/x/vyce/index.js';
+```
+
+Browser
+```html
+<script src="https://unpkg.com/vyce/dist/vyce.min.js"></script>
+```
+
+In the browser context, the default export name is `vyce`.
+
+Browser (ESM)
+```html
+<script type="module">
+  import { store, computed } from 'https://unpkg.com/vyce/dist/vyce.js';
+</script>
+```
+
+[Try on Flems.io](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvAHigjQGsACAJxigBeADog4xAJ6w4hGDGKjuhfmBEgSxAA5xEAel0BXNJs4BzfHSy64GTgd4YLcOLurPrt+47dxFkzTBqjAAexK7OogB8lGICMNTEEPQIiCAADIgAnGkgAL4U6Ni4qfgAVghUdAxMxHhV4tzA3OK0-Ny53ILcAG4S1DAA3MJow-XEzcQYjJ0TrTAAFE10RsSI3GntAJRDaGPcHNT8OAwz85udkRNTMPhw8vOa-N0X3IvcywxrjzDdFrQr3AA1NwAIxbbajZLjAAm8SONVO50El3E11u92+z2RryW-0+3ExfwBAFpQeCdsNUYxbgYAEbzaj2fgnbHAYbcbjQ2iM47EfC02jQiT4DhoGC8AASABUALIAGRmAAN2RzuCxCCDIgBhPGMXgsXQayIqjnqgBMkQAJMBGbxmXyPsRcgbCBaTWraQZiMR6Nx6NR2NROGoDvCGGcoqGYLyDZ7vfRjWhVR6vT6k-7A8HRLDDtGahGQJEc2HiLHUwmVYqdrltjE7rAEkk0CkQJlEAAOPIFECYHB4JwVGj0RjMVJ5AC6VHYXBSqB7RTwvX6MXs5FSGm0ekMxjMfysS5gAAE0vgzfg0rpoRBxLoD-gsBwyoP-MUxIcIJparlx7kgA)
 
 ## Usage
 
