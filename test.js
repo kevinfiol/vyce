@@ -1,10 +1,6 @@
+import { test, run } from 'flitch';
 import { strict as assert } from 'assert';
 import { store, computed } from './dist/vyce.js';
-
-// Test Vars
-let skip = [];
-let passes = 0;
-let failures = 0;
 
 test('store get and set with primitives', () => {
     const s = store(1);
@@ -166,35 +162,4 @@ test('computed utility', () => {
     assert.equal(second.get(), 150);
 });
 
-console.log(`Tests Passed ✓: ${passes}`);
-console.warn(`Tests Failed ✗: ${failures}`);
-
-if (failures) logFail(`\n✗ Tests failed with ${failures} failing tests.`);
-else logPass(`\n✓ All ${passes} tests passed.`)
-if (skip.length) {
-    console.log('\nThe following tests were skipped:');
-    console.log(skip.join('\n'));
-}
-
-// Test Utilities
-function not(label) {
-    skip.push(label);
-}
-
-function test(label, cb) {
-    try {
-        cb();
-        passes += 1;
-    } catch(e) {
-        failures += 1;
-        console.error(`Failed Test: "${label}":\n${e.message}\n`)
-    }
-}
-
-function logFail(str) {
-    console.error('\x1b[41m%s\x1b[0m', str);
-}
-
-function logPass(str) {
-    console.log('\x1b[42m%s\x1b[0m', str);
-}
+run();

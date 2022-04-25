@@ -1,6 +1,6 @@
 {
   "name": "vyce",
-  "version": "0.2.3",
+  "version": "0.3.0",
   "author": "kevinfiol",
   "license": "MIT",
   "repository": "https://github.com/kevinfiol/vyce",
@@ -23,7 +23,8 @@
     "dist"
   ],
   "devDependencies": {
-    "bundt": "^1.1.5"
+    "bundt": "^1.1.5",
+    "flitch": "^0.2.0"
   },
   "keywords": [
     "vanillajs",
