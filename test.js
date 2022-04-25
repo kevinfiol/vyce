@@ -1,5 +1,5 @@
 import { strict as assert } from 'assert';
-import { store, combine } from './dist/vyce.js';
+import { store, computed } from './dist/vyce.js';
 
 // Test Vars
 let skip = [];
@@ -83,6 +83,21 @@ test('store get and set with array', () => {
     assert.ok(failed);
 });
 
+test('store get and set with null and undefined', () => {
+    const s = store();
+    assert.equal(s.get(), undefined);
+
+    s.set(10);
+    s.set();
+    assert.equal(s.get(), 10);
+
+    s.set(undefined);
+    assert.equal(s.get(), 10);
+
+    s.set(null);
+    assert.equal(s.get(), null);
+});
+
 test('listen method', () => {
     const s = store(4);
     let listening = s.get();
@@ -119,13 +134,13 @@ test('subscriptions', () => {
     assert.deepEqual(watching, { a: 2, b: 3 });
 });
 
-test('combine utility', () => {
+test('computed utility', () => {
     const s = store(10);
     const t = store(20);
 
-    const combined = combine((first, second) => {
+    const combined = computed([s, t], (first, second) => {
         return first + second;
-    }, [s, t]);
+    });
 
     assert.equal(combined.get(), 30);
 
@@ -135,9 +150,9 @@ test('combine utility', () => {
     t.set(10);
     assert.equal(combined.get(), 50);
 
-    const second = combine((first, second) => {
+    const second = computed([combined, t], (first, second) => {
         return first + second;
-    }, [combined, t]);
+    });
 
     assert.equal(second.get(), 60);
 

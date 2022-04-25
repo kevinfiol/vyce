@@ -8,9 +8,8 @@ let arr = Array.isArray,
 export function store(init) {
   let $,
       x = get(init),
-      id = count++,
+      id = count,
       subs = [];
-  deps[id] = [];
 
   return $ = {
     get: _ => get(x),
@@ -22,16 +21,17 @@ export function store(init) {
     },
     end: _ => {
       subs = [];
-      deps[id] = deps[id].filter(u => !u());
+      deps[id] && (deps[id].map(u => u()), delete deps[id]);
     }
   };
 };
 
-export function combine(f, xs) {
+export function computed(xs, f) {
   let comb = store(),
       calc = _ => f(...xs.map(x => x.get()));
+  deps[count++] = [];
   xs.map(x =>
-    deps[count - 1].push(
+    deps[count-1].push(
       x.sub(_ => comb.set(calc()))
     )
   );
