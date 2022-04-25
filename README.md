@@ -55,20 +55,20 @@ Browser (ESM)
 </script>
 ```
 
-[Try on Flems.io](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvAHigjQGsACAJxigBeADog4xAJ6w4hGDGKjuhfmBEgSxAA5xEAel0BXNJs4BzfHSy64GTgd4YLcOLurPrt+47dxFkzTBqjAAexK7OogB8lGICMNTEEPQIiCAADIgAnGkgAL4U6Ni4qfgAVghUdAxMxHhV4tzA3OK0-Ny53ILcAG4S1DAA3MJow-XEzcQYjJ0TrTAAFE10RsSI3GntAJRDaGPcHNT8OAwz85udkRNTMPhw8vOa-N0X3IvcywxrjzDdFrQr3AA1NwAIxbbajZLjAAm8SONVO50El3E11u92+z2RryW-0+3ExfwBAFpQeCdsNUYxbgYAEbzaj2fgnbHAYbcbjQ2iM47EfC02jQiT4DhoGC8AASABUALIAGRmAAN2RzuCxCCDIgBhPGMXgsXQayIqjnqgBMkQAJMBGbxmXyPsRcgbCBaTWraQZiMR6Nx6NR2NROGoDvCGGcoqGYLyDZ7vfRjWhVR6vT6k-7A8HRLDDtGahGQJEc2HiLHUwmVYqdrltjE7rAEkk0CkQJlEAAOPIFECYHB4JwVGj0RjMVJ5AC6VHYXBSqB7RTwvX6MXs5FSGm0ekMxjMfysS5gAAE0vgzfg0rpoRBxLoD-gsBwyoP-MUxIcIJparlx7kgA)
+[Try on Flems.io](https://flems.io/#0=N4IgZglgNgpgziAXAbVAOwIYFsZJAOgAsAXLKEAGhAGMB7NYmBvAHigjQGsACAJxigBeADog4xAJ6w4hGDGKjuhfmBEgSxAA5xEAel0BXNJs4BzfHSy64GTgd4YLcOLurPrt+47dxFkzTBqjAAexK7OogB8lGICMNTEEPQIiCAADIgAnGkgAL4U6Ni4qfgAVghUdAxMxHhV4tzA3OK0-Ny53ILcAG4S1DAA3MJow-XEzcQYjJ0TrTAAFE10RsSI3GntAJRDaGPcHNT8OAwz85udkRNTMPhw8vOa-N0X3IvcywxrjzDdFrQr3AA1NwAIxbbajZLjAAm8SONVO50El3E11u92+z2RryW-0+3ExfwBAFpQeCdsNUYxbgYAEbzaj2fgnbHAYbcbjQ2iM47EfC02jQiT4DhoGC8AASABUALIAGRmAAN2RzuCxCCDIgBhPGMXgsXQayIqjnqgBMkQAJMBGbxmXyPsRcgbCBaTWraQZiMR6Nx6NR2NROGoDvCGGcoqGYLyDZ7vfRjWhVR6vT6k-7A8HRLDDtGahGQJEc2HiLHUwmVYqdrltjE7rAEkk0CkQJlEAAOPIFECYHB4JwVGj0RjMVJ5AC6VHYXBSqB7RTwvX6MXs5FSGm0ekMxjMfysS5gAAE0vgzfg0rpoRBxLoD-gsBwyoP-MUxIcIJparlx7kgA).
 
 ## Usage
 
 See [index.d.ts](/index.d.ts) for type definitions.
 
-To begin using, import `store` and/or `computed` from `'vyce'`. Below is a description of a store's built-in methods.
+To begin using vyce, import `store` and/or `computed`.
 
 ### `Store.get`
 ```js
 import { store } from 'vyce';
 
 const state = store({ name: 'denam' });
-state.get(); // { name: 'denam' }
+state.get(); // `{ name: 'denam' }`
 ```
 
 ### `Store.set`
