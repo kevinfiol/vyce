@@ -1,6 +1,8 @@
-import { test, run } from 'flitch';
+import { suite } from 'flitch';
 import { strict as assert } from 'assert';
 import { store, computed } from './dist/vyce.js';
+
+const test = suite('Vyce Tests');
 
 test('store get and set with primitives', () => {
     const s = store(1);
@@ -162,4 +164,4 @@ test('computed utility', () => {
     assert.equal(second.get(), 150);
 });
 
-run();
+test.run();

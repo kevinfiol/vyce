@@ -24,7 +24,7 @@
   ],
   "devDependencies": {
     "bundt": "^1.1.5",
-    "flitch": "^0.3.0"
+    "flitch": "^0.4.1"
   },
   "keywords": [
     "vanillajs",
