@@ -1,14 +1,20 @@
-lockfileVersion: 5.3
+lockfileVersion: 5.4
 
 specifiers:
   bundt: ^1.1.5
-  flitch: ^0.2.3
+  flitch: ^0.3.0
 
 devDependencies:
   bundt: 1.1.5
-  flitch: 0.2.3
+  flitch: 0.3.0
 
 packages:
+
+  /acorn/8.7.1:
+    resolution: {integrity: sha512-Xx54uLJQZ19lKygFXOWsscKUbsBZW0CPykPhVQdhIeIwrbPmJzqeASDInc8nKBnp/JT6igTs82qPXz069H8I/A==}
+    engines: {node: '>=0.4.0'}
+    hasBin: true
+    dev: true
 
   /buffer-from/1.1.2:
     resolution: {integrity: sha512-E+XQCRwSbaaiChtv6k6Dwgc+bx+Bs6vuKJHHl5kox/BaKbhiXzqQOwK4cO22yElGp2OCmjwVhT3HmxgyPGnJfQ==}
@@ -29,8 +35,8 @@ packages:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
     dev: true
 
-  /flitch/0.2.3:
-    resolution: {integrity: sha512-t9OElY1/eFWFju3lNAEzKNxGJsjABMgSKDaQ1C8IL/zbaebn8GFD6WUQfaZmEf36ImYtTWOavFTMx+mUMo4FRQ==}
+  /flitch/0.3.0:
+    resolution: {integrity: sha512-rTBrKa4oOWTxrYI4/1VlSLdUWQkxPgM3OIR4P96j1ZQCuUZ64tu3SkiHEcEnZmzwKB3F1sATHI3xGwwy+Qf7fw==}
     engines: {node: '>=14.8.x'}
     dev: true
 
@@ -66,6 +72,7 @@ packages:
     engines: {node: '>=6.0.0'}
     hasBin: true
     dependencies:
+      acorn: 8.7.1
       commander: 2.20.3
       source-map: 0.6.1
       source-map-support: 0.5.21
