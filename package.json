@@ -1,11 +1,11 @@
 {
   "name": "vyce",
-  "version": "0.4.2",
+  "version": "0.4.3",
   "author": "kevinfiol",
   "license": "MIT",
   "repository": "https://github.com/kevinfiol/vyce",
   "type": "module",
-  "description": "KISS store utility",
+  "description": "A simple store utility",
   "main": "dist/vyce.cjs",
   "module": "dist/vyce.js",
   "unpkg": "dist/vyce.min.js",
