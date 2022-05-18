@@ -63,8 +63,6 @@ See [index.d.ts](/index.d.ts) for type definitions.
 
 By default, stores created with vyce use a built-in deep clone function based on an algorithm adapted from [klona](https://github.com/lukeed/klona). The default function will clone JSON data types. You may opt to use another deep clone utility by passing `clone` in the config:
 
-### API
-
 ```js
 import { store } from 'vyce';
 import { klona } from 'klona/full';
@@ -72,7 +70,9 @@ import { klona } from 'klona/full';
 const state = store({ name: 'denam' }, { clone: klona });
 ```
 
-#### `get`
+### API
+
+#### `store.get`
 ```js
 import { store } from 'vyce';
 
@@ -80,7 +80,7 @@ const state = store({ name: 'denam' });
 state.get(); // `{ name: 'denam' }`
 ```
 
-#### ` set`
+#### `store.set`
 ```js
 import { store } from 'vyce';
 
@@ -95,7 +95,7 @@ state.set(prev => ({ ...prev, name: 'catiua' }));
 state.get(); // `{ age: 18, name: 'catiua' }`
 ```
 
-#### `sub`
+#### `store.sub`
 The subscriber function is called once upon subscribing.
 ```js
 import { store } from 'vyce';
@@ -108,7 +108,7 @@ unsub();
 state.set(30); // does not log anything
 ```
 
-#### `end`
+#### `store.end`
 Calling `end` will release all subscriptions and clean up dependency stores, meaning subscriber functions will no longer be called upon updating the store.
 
 ```js
