@@ -1,7 +1,7 @@
 type Unsubscriber = () => void;
 type Subscriber<T> = (data: T) => any;
 type Setter<T> = (prev: T) => T;
-type ComputeMethod<T> = (values: T[]) => T
+type ComputeMethod<T> = (values: T[]) => any;
 
 type Store<T> = {
     get: () => T;
@@ -11,5 +11,5 @@ type Store<T> = {
     end: () => void;
 };
 
-export function store<T>(init: T): Store<T>;
+export function store<T>(init: T, config?: { clone: (value: T) => T }): Store<T>;
 export function computed<T>(stores: Store<T>[], compute: ComputeMethod<T>): Store<T>;

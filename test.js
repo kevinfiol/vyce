@@ -37,18 +37,8 @@ test('store get and set with object', () => {
         delete p.b;
         return p;
     });
+
     assert.deepEqual(s.get(), { a: 4 });
-
-    // attempting to modify object fails
-    let failed = false;
-    try {
-        let foo = s.get();
-        foo.a = 5;
-    } catch (e) {
-        failed = true;
-    }
-
-    assert.ok(failed);
 });
 
 test('store get and set with array', () => {
@@ -68,17 +58,6 @@ test('store get and set with array', () => {
         return p;
     });
     assert.deepEqual(s.get(), ['a', 2, 3, 4]);
-
-    // attempting to modify array fails
-    let failed = false;
-    try {
-        let foo = s.get();
-        foo[0] = 5;
-    } catch (e) {
-        failed = true;
-    }
-
-    assert.ok(failed);
 });
 
 test('store get and set with null and undefined', () => {
@@ -94,26 +73,6 @@ test('store get and set with null and undefined', () => {
 
     s.set(null);
     assert.equal(s.get(), null);
-});
-
-test('listen method', () => {
-    const s = store(4);
-    let listening = s.get();
-
-    let unsub = s.listen(v => listening = (v * 2));
-    assert.equal(listening, 4); // should be the same
-
-    s.set(10);
-    assert.equal(listening, 20);
-
-    s.set();
-    assert.equal(listening, 20); // unchanged
-
-    unsub();
-    s.set(1);
-
-    assert.equal(s.get(), 1);
-    assert.equal(listening, 20);
 });
 
 test('subscriptions', () => {
@@ -162,6 +121,34 @@ test('computed utility', () => {
     // since combined broke all subs, it didn't update combined when we set to 0
     // however, t is still sending updates to second
     assert.equal(second.get(), 150);
+});
+
+test('defaultClone utility', () => {
+    const s = store({ boxes: { a: { v: 10 }, b: { v: 20 } } });
+    let tmp = s.get();
+
+    assert.notEqual(tmp, s.get());
+    assert.notEqual(tmp.boxes, s.get().boxes);
+    assert.notEqual(tmp.boxes.a, s.get().boxes.a);
+    assert.deepEqual(tmp, s.get());
+
+    // test setting
+    s.set(prev => {
+        prev.boxes.a.v = 20;
+        assert.notEqual(s.get().boxes.a.v, 20);
+        return prev;
+    });
+
+    assert.equal(s.get().boxes.a.v, 20);
+
+    // test subs
+    s.sub((current) => {
+        current.boxes.a.v = 100;
+        assert.notEqual(s.get(), current);
+        assert.notEqual(s.get().boxes.a, current.boxes.a);
+    });
+
+    assert.equal(s.get().boxes.a.v, 20);
 });
 
 test.run();

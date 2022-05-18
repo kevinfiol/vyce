@@ -61,9 +61,18 @@ Browser (ESM)
 
 See [index.d.ts](/index.d.ts) for type definitions.
 
-To begin using vyce, import `store` and/or `computed`.
+By default, stores created with vyce use a built-in deep clone function based on an algorithm adapted from [klona](https://github.com/lukeed/klona). The default function will clone JSON data types. You may opt to use another deep clone utility by passing `clone` in the config:
 
-### `Store.get`
+### API
+
+```js
+import { store } from 'vyce';
+import { klona } from 'klona/full';
+
+const state = store({ name: 'denam' }, { clone: klona });
+```
+
+#### `get`
 ```js
 import { store } from 'vyce';
 
@@ -71,7 +80,7 @@ const state = store({ name: 'denam' });
 state.get(); // `{ name: 'denam' }`
 ```
 
-### `Store.set`
+#### ` set`
 ```js
 import { store } from 'vyce';
 
@@ -86,20 +95,8 @@ state.set(prev => ({ ...prev, name: 'catiua' }));
 state.get(); // `{ age: 18, name: 'catiua' }`
 ```
 
-### `Store.listen`
-```js
-import { store } from 'vyce';
-
-const state = store(10);
-const unsub = state.listen(value => console.log(value)); // listener function is not called yet
-
-state.set(20); // logs `20`
-unsub();
-state.set(30); // does not log anything
-```
-
-### `Store.sub`
-Same as `Store.listen`, except the subscriber function is called upon subscribing.
+#### `sub`
+The subscriber function is called once upon subscribing.
 ```js
 import { store } from 'vyce';
 
@@ -111,7 +108,7 @@ unsub();
 state.set(30); // does not log anything
 ```
 
-### `Store.end`
+#### `end`
 Calling `end` will release all subscriptions and clean up dependency stores, meaning subscriber functions will no longer be called upon updating the store.
 
 ```js
@@ -134,4 +131,4 @@ console.log(ham.get()); // logs `130`
 
 ## Credits
 
-Inspired by [flyd](https://github.com/paldepind/flyd), and [Svelte Stores](https://svelte.dev/docs#run-time-svelte-store).
+Inspired by [flyd](https://github.com/paldepind/flyd), [klona](https://github.com/lukeed/klona), and [Svelte Stores](https://svelte.dev/docs#run-time-svelte-store).

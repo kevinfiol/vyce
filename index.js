@@ -1,22 +1,38 @@
 let arr = Array.isArray,
-    obj = x => x != null && typeof x == 'object',
-    freeze = Object.freeze,
+    obj = x => Object.prototype.toString.call(x) == '[object Object]',
     count = 1,
     deps = {},
-    get = x => arr(x) ? freeze([...x]) : obj(x) ? freeze({...x}) : x;
+    defaultClone = v => {
+      let out,
+          k,
+          tmp,
+          setProp = _ => out[k] = (tmp=v[k]) && typeof tmp == 'object' ? defaultClone(tmp) : tmp;
 
-export function store(init) {
-  let $,
-      x = get(init),
+      if (arr(v)) {
+        out = [], k = v.length;
+        while (k--) setProp();
+        return out;
+      }
+
+      if (obj(v)) {
+        out = {};
+        for (k in v) setProp();
+        return out;
+      }
+
+      return v;
+    };
+
+export function store(init, { clone = defaultClone } = {}) {
+  let x = init,
       id = count,
       subs = [];
 
-  return $ = {
-    get: _ => get(x),
-    listen: f => subs.push(f) && (() => subs = subs.filter(g => g != f)),
-    sub: f => (f(x) || 1) && $.listen(f),
+  return {
+    get: _ => clone(x),
+    sub: f => (f(clone(x)), subs.push(f)) && (_ => subs = subs.filter(g => g != f)),
     set: (y = x) => {
-      x = typeof y == 'function' ? y(x) : y;
+      x = typeof y == 'function' ? y(clone(x)) : y;
       subs.map(f => f(x));
     },
     end: _ => {
