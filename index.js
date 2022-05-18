@@ -1,6 +1,4 @@
-let arr = Array.isArray,
-    obj = x => Object.prototype.toString.call(x) == '[object Object]',
-    count = 1,
+let count = 1,
     deps = {},
     defaultClone = v => {
       let out,
@@ -8,13 +6,13 @@ let arr = Array.isArray,
           tmp,
           setProp = _ => out[k] = (tmp=v[k]) && typeof tmp == 'object' ? defaultClone(tmp) : tmp;
 
-      if (arr(v)) {
+      if (Array.isArray(v)) {
         out = [], k = v.length;
         while (k--) setProp();
         return out;
       }
 
-      if (obj(v)) {
+      if (Object.prototype.toString.call(v) == '[object Object]') {
         out = {};
         for (k in v) setProp();
         return out;
