@@ -12,7 +12,7 @@ let count = 1,
         return out;
       }
 
-      if (Object.prototype.toString.call(v) == '[object Object]') {
+      if (v && Object.getPrototypeOf(v) == Object.prototype) {
         out = {};
         for (k in v) setProp();
         return out;
