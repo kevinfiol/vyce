@@ -1,7 +1,7 @@
 let count = 1,
     deps = {},
     defaultClone = v => {
-      let out,
+      let out = v,
           k,
           tmp,
           setProp = _ => out[k] = (tmp=v[k]) && typeof tmp == 'object' ? defaultClone(tmp) : tmp;
@@ -9,16 +9,14 @@ let count = 1,
       if (Array.isArray(v)) {
         out = [], k = v.length;
         while (k--) setProp();
-        return out;
       }
 
       if (v && Object.getPrototypeOf(v) == Object.prototype) {
         out = {};
         for (k in v) setProp();
-        return out;
       }
 
-      return v;
+      return out;
     };
 
 export function store(init, { clone = defaultClone } = {}) {
@@ -29,7 +27,7 @@ export function store(init, { clone = defaultClone } = {}) {
   return {
     get: _ => clone(x),
     sub: f => (f(clone(x)), subs.push(f)) && (_ => subs = subs.filter(g => g != f)),
-    set: (y = x) => {
+    set: y => {
       x = typeof y == 'function' ? y(clone(x)) : y;
       subs.map(f => f(x));
     },

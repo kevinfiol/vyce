@@ -13,9 +13,6 @@ test('store get and set with primitives', () => {
     s.set(2);
     assert.equal(s.get(), 2);
 
-    s.set();
-    assert.equal(s.get(), 2); // unchanged
-
     s.set(p => p + 1);
     assert.equal(s.get(), 3);
 });
@@ -66,10 +63,7 @@ test('store get and set with null and undefined', () => {
 
     s.set(10);
     s.set();
-    assert.equal(s.get(), 10);
-
-    s.set(undefined);
-    assert.equal(s.get(), 10);
+    assert.equal(s.get(), undefined);
 
     s.set(null);
     assert.equal(s.get(), null);
@@ -150,5 +144,36 @@ test('defaultClone utility', () => {
 
     assert.equal(s.get().boxes.a.v, 20);
 });
+
+test('using a custom clone utility', () => {
+    // this clone utility... doesn't clone at all! it just returns the same reference
+    const s = store({ boxes: { a: { v: 10 } } }, { clone: (x) => x });
+    let tmp = s.get();
+
+    // in this case, the references should be equal
+    assert.equal(tmp, s.get());
+    assert.equal(tmp.boxes, s.get().boxes);
+    assert.equal(tmp.boxes.a, s.get().boxes.a);
+
+    // this clone is just a shallow copy of objects and arrays
+    const shallowClone = x => {
+        if (Array.isArray(x)) return [...x];
+        if (x && Object.getPrototypeOf(x) == Object.prototype) return {...x};
+        return x;
+    };
+
+    const t = store({ boxes: { a: { v: 10 } }, foo: [{ b: 20 }] }, {
+        clone: shallowClone
+    });
+
+    tmp = t.get();
+    assert.notEqual(tmp, t.get()); // only the top level obj is cloned
+    assert.equal(tmp.boxes, t.get().boxes);
+    assert.equal(tmp.foo, t.get().foo);
+    assert.equal(tmp.foo[0], t.get().foo[0]);
+
+    const u = store(10, { clone: shallowClone });
+    assert.equal(10, u.get());
+})
 
 test.run();
