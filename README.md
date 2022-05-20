@@ -94,7 +94,7 @@ state.get(); // `{ age: 18, name: 'catiua' }`
 ```
 
 #### `store.sub`
-The subscriber function is called once upon subscribing.
+Note: by default, the subscriber function is called once upon subscribing.
 ```js
 import { store } from 'vyce';
 
@@ -104,6 +104,16 @@ const unsub = state.sub(value => console.log(value)); // logs `10`
 state.set(20); // logs `20`
 unsub();
 state.set(30); // does not log anything
+```
+
+Pass a falsey value as a second argument to `store.sub` to disable the initial call.
+```js
+import { store } from 'vyce';
+
+const state = store(10);
+const unsub = state.sub(value => console.log(value), false); // does not log
+
+state.set(20); // logs `20`
 ```
 
 #### `store.end`

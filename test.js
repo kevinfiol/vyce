@@ -85,6 +85,21 @@ test('subscriptions', () => {
     assert.deepEqual(watching, { a: 2, b: 3 });
 });
 
+test('subscriptions with initial calculation disabled', () => {
+    const s = store({ a: 2 });
+    let watching;
+
+    let unsub = s.sub(v => watching = v, false); // should not execute
+    assert.equal(watching, undefined);
+
+    s.set(p => ({ ...p, b: 3 }));
+    assert.deepEqual(watching, { a: 2, b: 3 });
+
+    unsub();
+    s.set({ c: 10 });
+    assert.deepEqual(watching, { a: 2, b: 3 });
+});
+
 test('computed utility', () => {
     const s = store(10);
     const t = store(20);
@@ -115,6 +130,31 @@ test('computed utility', () => {
     // since combined broke all subs, it didn't update combined when we set to 0
     // however, t is still sending updates to second
     assert.equal(second.get(), 150);
+});
+
+test('computed with many stores', () => {
+    const s = store({ num: 10 });
+    const t = computed([s], x => ({ ...x, num: x.num + 10 }));
+    const u = computed([t], x => ({ ...x, num: x.num * 2 }));
+
+    assert.deepEqual(s.get(), { num: 10 });
+    assert.deepEqual(t.get(), { num: 20 });
+    assert.deepEqual(u.get(), { num: 40 });
+
+    s.set(prev => ({ ...prev, num: prev.num * 10 }));
+    assert.deepEqual(s.get(), { num: 100 });
+    assert.deepEqual(t.get(), { num: 110 });
+    assert.deepEqual(u.get(), { num: 220 });
+
+    let noOfTimesComputedFnRan = 0;
+    const foo = computed([s, t, u], (x, y, z) => {
+        noOfTimesComputedFnRan += 1;
+        return x.num + y.num + z.num;
+    });
+
+    // computed function should only run ONCE to get initial calculation
+    assert.equal(noOfTimesComputedFnRan, 1);
+    assert.equal(foo.get(), 430);
 });
 
 test('defaultClone utility', () => {

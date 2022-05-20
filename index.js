@@ -26,7 +26,7 @@ export function store(init, { clone = defaultClone } = {}) {
 
   return {
     get: _ => clone(x),
-    sub: f => (f(clone(x)), subs.push(f)) && (_ => subs = subs.filter(g => g != f)),
+    sub: (f, run = count) => (run && f(clone(x)), subs.push(f)) && (_ => subs = subs.filter(g => g != f)),
     set: y => {
       x = typeof y == 'function' ? y(clone(x)) : y;
       subs.map(f => f(x));
@@ -39,13 +39,16 @@ export function store(init, { clone = defaultClone } = {}) {
 };
 
 export function computed(xs, f) {
-  let comb = store(),
-      calc = _ => f(...xs.map(x => x.get()));
+  let calc = _ => f(...xs.map(x => x.get())),
+      comb = store(calc());
+
   deps[count++] = [];
+
   xs.map(x =>
     deps[count-1].push(
-      x.sub(_ => comb.set(calc()))
+      x.sub(_ => comb.set(calc()), false)
     )
   );
+
   return comb;
 };
