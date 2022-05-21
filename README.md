@@ -94,7 +94,6 @@ state.get(); // `{ age: 18, name: 'catiua' }`
 ```
 
 #### `store.sub`
-Note: by default, the subscriber function is called once upon subscribing.
 ```js
 import { store } from 'vyce';
 
@@ -106,7 +105,7 @@ unsub();
 state.set(30); // does not log anything
 ```
 
-Pass a falsey value as a second argument to `store.sub` to disable the initial call.
+Note: by default, the subscriber function is called once upon subscribing. Pass a falsey value as a second argument to `store.sub` to disable the initial call.
 ```js
 import { store } from 'vyce';
 
