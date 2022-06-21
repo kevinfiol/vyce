@@ -19,7 +19,7 @@ let count = 1,
       return out;
     };
 
-export function store(init, { clone = defaultClone } = {}) {
+export function store(init, clone = defaultClone) {
   let x = init,
       id = count,
       subs = [];

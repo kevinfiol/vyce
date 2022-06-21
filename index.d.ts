@@ -11,5 +11,5 @@ type Store<T> = {
     end: () => void;
 };
 
-export function store<T>(init: T, config?: { clone: (value: T) => T }): Store<T>;
+export function store<T>(init: T, clone: (value: T) => T): Store<T>;
 export function computed<T>(stores: Store<T>[], compute: ComputeMethod<T>): Store<T>;

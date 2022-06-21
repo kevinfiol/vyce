@@ -187,7 +187,7 @@ test('defaultClone utility', () => {
 
 test('using a custom clone utility', () => {
     // this clone utility... doesn't clone at all! it just returns the same reference
-    const s = store({ boxes: { a: { v: 10 } } }, { clone: (x) => x });
+    const s = store({ boxes: { a: { v: 10 } } }, (x) => x);
     let tmp = s.get();
 
     // in this case, the references should be equal
@@ -202,9 +202,7 @@ test('using a custom clone utility', () => {
         return x;
     };
 
-    const t = store({ boxes: { a: { v: 10 } }, foo: [{ b: 20 }] }, {
-        clone: shallowClone
-    });
+    const t = store({ boxes: { a: { v: 10 } }, foo: [{ b: 20 }] }, shallowClone);
 
     tmp = t.get();
     assert.notEqual(tmp, t.get()); // only the top level obj is cloned
@@ -212,7 +210,7 @@ test('using a custom clone utility', () => {
     assert.equal(tmp.foo, t.get().foo);
     assert.equal(tmp.foo[0], t.get().foo[0]);
 
-    const u = store(10, { clone: shallowClone });
+    const u = store(10, shallowClone);
     assert.equal(10, u.get());
 })
 
