@@ -1,4 +1,4 @@
-import { suite } from 'flitch';
+import { suite, run } from 'flitch';
 import { strict as assert } from 'assert';
 import { store, computed } from './dist/vyce.js';
 
@@ -214,4 +214,4 @@ test('using a custom clone utility', () => {
     assert.equal(10, u.get());
 })
 
-test.run();
+run();
