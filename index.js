@@ -22,31 +22,31 @@ let count = 1,
 export function store(init, clone = defaultClone) {
   let x = init,
       id = count,
-      subs = [];
+      subs = [],
+      $ = y => {
+        if (y === undefined) return clone(x);
+        x = typeof y == 'function' ? y(clone(x)) : y;
+        subs.map(f => f(x));
+      };
 
-  return {
-    get: _ => clone(x),
-    sub: (f, run = count) => (run && f(clone(x)), subs.push(f)) && (_ => subs = subs.filter(g => g != f)),
-    set: y => {
-      x = typeof y == 'function' ? y(clone(x)) : y;
-      subs.map(f => f(x));
-    },
-    end: _ => {
-      subs = [];
-      deps[id] && (deps[id].map(u => u()), delete deps[id]);
-    }
+  $.sub = (f, run = count) => (run && f(clone(x)), subs.push(f)) && (_ => subs = subs.filter(g => g != f)),
+  $.end = _ => {
+    subs = [];
+    deps[id] && (deps[id].map(u => u()), delete deps[id]);
   };
+
+  return $;
 };
 
 export function computed(xs, f) {
-  let calc = _ => f(...xs.map(x => x.get())),
+  let calc = _ => f(...xs.map(x => x())),
       comb = store(calc());
 
   deps[count++] = [];
 
   xs.map(x =>
     deps[count-1].push(
-      x.sub(_ => comb.set(calc()), false)
+      x.sub(_ => comb(calc()), false)
     )
   );
 
