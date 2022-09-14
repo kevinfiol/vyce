@@ -23,13 +23,15 @@ export function store(init, clone = defaultClone) {
   let x = init,
       id = count,
       subs = [],
-      $ = y => {
-        if (y === undefined) return clone(x);
+      $ = function (y) {
+        if (arguments.length < 1) return clone(x);
         x = typeof y == 'function' ? y(clone(x)) : y;
         subs.map(f => f(x));
       };
 
-  $.sub = (f, run = count) => (run && f(clone(x)), subs.push(f)) && (_ => subs = subs.filter(g => g != f)),
+  $.sub = (f, run = count) =>
+    (run && f(clone(x)), subs.push(f)) && (_ => subs = subs.filter(g => g != f));
+
   $.end = _ => {
     subs = [];
     deps[id] && (deps[id].map(u => u()), delete deps[id]);
