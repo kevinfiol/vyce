@@ -1,15 +1,16 @@
 type Unsubscriber = () => void;
 type Subscriber<T> = (data: T) => any;
-type Setter<T> = (prev: T) => T;
+type Setter<T> = (prev: T) => any;
 type ComputeMethod<T> = (values: T[]) => any;
 
 type Store<T> = {
-    get: () => T;
-    listen: (subscriber: Subscriber<T>) => Unsubscriber;
-    sub: (subscriber: Subscriber<T>) => Unsubscriber;
-    set: (value: T | Setter<T>) => void;
+    (): T;
+    (value: T): void;
+    (setter: Setter): void;
+
+    sub: (subscriber: Subscriber<T>, initialCall: any) => Unsubscriber;
     end: () => void;
 };
 
 export function store<T>(init: T, clone: (value: T) => T): Store<T>;
-export function computed<T>(stores: Store<T>[], compute: ComputeMethod<T>): Store<T>;
+export function computed<T>(stores: Store<any>[], compute: ComputeMethod<any>): Store<T>;

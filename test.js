@@ -65,6 +65,9 @@ test('store get and set with null and undefined', () => {
     s();
     assert.equal(s(), 10);
 
+    s(undefined)
+    assert.equal(s(), undefined);
+
     s(null);
     assert.equal(s(), null);
 });

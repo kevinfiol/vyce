@@ -15,13 +15,13 @@ const youngAuthors = computed([authors], xs =>
     xs.filter(author => author.age < 40)
 );
 
-authors.set(prev => [
+authors(prev => [
     ...prev,
     { name: 'david', age: 28 },
     { name: 'lovecraft', age: 57 }
 ]);
 
-youngAuthors.get()
+youngAuthors()
 // [
 //  { name: 'haruki', age: 25 },
 //  { name: 'james', age: 32 },
@@ -72,25 +72,22 @@ const state = store({ name: 'denam' }, klona);
 
 ### API
 
-#### `store.get`
-```js
-import { store } from 'vyce';
-
-const state = store({ name: 'denam' });
-state.get(); // `{ name: 'denam' }`
-```
-
-#### `store.set`
+#### `store()`
 ```js
 import { store } from 'vyce';
 
 const state = store({ name: 'denam' });
 
-state.set({ age: 18 }); // store is overwritten
-state.get(); // `{ age: 18 }`
+// call your store without arguments to get the value
+state(); // `{ name: 'denam' }`
 
-state.set(prev => ({ ...prev, name: 'catiua' }));
-state.get(); // `{ age: 18, name: 'catiua' }`
+// pass an argument to set its value
+state({ age: 18 });
+
+// or pass a function to set a value based on the previous value
+state(prev => ({ ...prev, name: 'catiua' }));
+
+state(); // `{ age: 18, name: 'catiua' }`
 ```
 
 #### `store.sub`
@@ -100,9 +97,9 @@ import { store } from 'vyce';
 const state = store(10);
 const unsub = state.sub(value => console.log(value)); // logs `10`
 
-state.set(20); // logs `20`
+state(20); // logs `20`
 unsub();
-state.set(30); // does not log anything
+state(30); // does not log anything
 ```
 
 Note: by default, the subscriber function is called once upon subscribing. Pass a falsey value as a second argument to `store.sub` to disable the initial call.
@@ -112,7 +109,7 @@ import { store } from 'vyce';
 const state = store(10);
 const unsub = state.sub(value => console.log(value), false); // does not log
 
-state.set(20); // logs `20`
+state(20); // logs `20`
 ```
 
 #### `store.end`
@@ -129,11 +126,11 @@ const ham = computed([rum, bar], (x, y) => x + y); // 50
 
 rum.end(); // breaks all listeners (ham), and also stops listening to foo and bar
 
-bar.set(100); // does not affect rum, but *does* affect ham
-console.log(rum.get()); // logs `30`
+bar(100); // does not affect rum, but *does* affect ham
+console.log(rum()); // logs `30`
 
-rum.set(0); // does not affect ham
-console.log(ham.get()); // logs `130`
+rum(0); // does not affect ham
+console.log(ham()); // logs `130`
 ```
 
 ## Credits
