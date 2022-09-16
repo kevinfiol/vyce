@@ -24,8 +24,10 @@ export function store(init, clone = defaultClone) {
       id = count,
       subs = [],
       $ = function (y) {
+        if (!arguments.length)
+          return clone(x);
+
         if (y !== x) {
-          if (arguments.length < 1) return clone(x);
           x = typeof y == 'function' ? y(clone(x)) : y;
           subs.map(f => f(x));
         }
