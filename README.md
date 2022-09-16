@@ -112,7 +112,7 @@ const unsub = state.sub(value => console.log(value), false); // does not log
 state(20); // logs `20`
 ```
 
-Note that setting a store will only update and update subscribers if the new value is different than the old value. Internally, this is determined by using the `===` operator, which means passing the same reference to an object twice will *not* trigger an update even if that object has changed properties. In these instances, you can force an update by passing a shallow copy.
+Note that setting a store will only update its value and run subscriptions if the new value is different than the old value. Internally, this is determined by using the `===` operator, which means passing the same reference to an object twice will *not* trigger an update even if that object has changed properties. In these instances, you can force an update by passing a shallow copy.
 ```js
 import { store } from 'vyce';
 
