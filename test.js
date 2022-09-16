@@ -215,6 +215,23 @@ test('using a custom clone utility', () => {
 
     const u = store(10, shallowClone);
     assert.equal(10, u());
-})
+});
+
+test('should not update if strictly equal', () => {
+    let count = 0;
+    const obj = { lanselot: 1 };
+
+    const s = store(obj);
+    s.sub(() => count += 1);
+
+    assert.equal(count, 1);
+
+    obj.warren = 2;
+    s(obj);
+    assert.equal(count, 1);
+
+    s({ ...obj });
+    assert.equal(count, 2);
+});
 
 run();
