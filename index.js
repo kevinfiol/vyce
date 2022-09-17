@@ -29,7 +29,8 @@ export function store(init, clone = defaultClone) {
 
         if (y !== x) {
           x = typeof y == 'function' ? y(clone(x)) : y;
-          subs.map(f => f(x));
+          let z = clone(x);
+          subs.map(f => f(z));
         }
       };
 

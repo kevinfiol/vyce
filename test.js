@@ -180,10 +180,13 @@ test('defaultClone utility', () => {
 
     // test subs
     s.sub((current) => {
+        // current should !== s() on every sub call
         current.boxes.a.v = 100;
         assert.notEqual(s(), current);
         assert.notEqual(s().boxes.a, current.boxes.a);
     });
+
+    s(s());
 
     assert.equal(s().boxes.a.v, 20);
 });
@@ -219,18 +222,14 @@ test('using a custom clone utility', () => {
 
 test('should not update if strictly equal', () => {
     let count = 0;
-    const obj = { lanselot: 1 };
 
-    const s = store(obj);
+    const s = store(0);
     s.sub(() => count += 1);
 
     assert.equal(count, 1);
-
-    obj.warren = 2;
-    s(obj);
+    s(0);
     assert.equal(count, 1);
-
-    s({ ...obj });
+    s(1);
     assert.equal(count, 2);
 });
 
