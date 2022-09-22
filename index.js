@@ -1,5 +1,5 @@
 let count = 1,
-    deps = {},
+    comps = [],
     defaultClone = v => {
       let out = v,
           k,
@@ -23,9 +23,13 @@ export function store(init, clone = defaultClone) {
   let x = init,
       id = count,
       subs = [],
+      unsubs = [],
       $ = function (y) {
-        if (!arguments.length)
+        if (!arguments.length) {
+          let comp = comps[comps.length - 1];
+          comp && unsubs.push($.sub(comp, false));
           return clone(x);
+        }
 
         if (y !== x) {
           x = typeof y == 'function' ? y(clone(x)) : y;
@@ -34,28 +38,23 @@ export function store(init, clone = defaultClone) {
         }
       };
 
-  $.sub = (f, run = count) =>
-    (run && f(clone(x)), subs.push(f)) && (_ => subs = subs.filter(g => g != f));
+  $.sub = (f, run = count) => {
+    run && f(clone(x));
+    !~subs.indexOf(f) && subs.push(f);
+    return _ => subs = subs.filter(g => g != f)
+  };
 
   $.end = _ => {
     subs = [];
-    deps[id] && (deps[id].map(u => u()), delete deps[id]);
+    unsubs.map(u => u());
   };
 
   return $;
 };
 
-export function computed(xs, f) {
-  let calc = _ => f(...xs.map(x => x())),
-      comb = store(calc());
-
-  deps[count++] = [];
-
-  xs.map(x =>
-    deps[count-1].push(
-      x.sub(_ => comb(calc()), false)
-    )
-  );
-
+export function computed(f) {
+  let comb = store(),
+      calc = _ => (comps.push(calc), comb(f()), comps.pop());
+  calc();
   return comb;
 };
