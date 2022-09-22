@@ -1,6 +1,6 @@
 {
   "name": "vyce",
-  "version": "0.8.4",
+  "version": "0.9.0",
   "author": "kevinfiol",
   "license": "MIT",
   "repository": "https://github.com/kevinfiol/vyce",
@@ -13,7 +13,7 @@
   "umd:name": "vyce",
   "scripts": {
     "test": "node test.js",
-    "build": "bundt index.js && node test.js"
+    "prepare": "bundt index.js && node test.js"
   },
   "engines": {
     "node": ">=12.x"

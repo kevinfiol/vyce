@@ -1,5 +1,4 @@
-let count = 1,
-    comps = [],
+let comps = [],
     defaultClone = v => {
       let out = v,
           k,
@@ -17,44 +16,51 @@ let count = 1,
       }
 
       return out;
-    };
+    },
+    clone = defaultClone;
 
-export function store(init, clone = defaultClone) {
+export const setClone = f => clone = f || defaultClone;
+
+export function store(init) {
   let x = init,
-      id = count,
       subs = [],
-      unsubs = [],
       $ = function (y) {
         if (!arguments.length) {
           let comp = comps[comps.length - 1];
-          comp && unsubs.push($.sub(comp, false));
+          comp && $.sub(comp, false);
           return clone(x);
         }
 
         if (y !== x) {
           x = typeof y == 'function' ? y(clone(x)) : y;
           let z = clone(x);
-          subs.map(f => f(z));
+          for (let i = 0; i < subs.length; i++) subs[i](z);
         }
       };
 
-  $.sub = (f, run = count) => {
+  $.sub = (f, run = true) => {
     run && f(clone(x));
     !~subs.indexOf(f) && subs.push(f);
-    return _ => subs = subs.filter(g => g != f)
+    return _ => {
+      let idx = subs.indexOf(f);
+      if (~idx) subs.splice(idx, 1);
+    };
   };
 
-  $.end = _ => {
-    subs = [];
-    unsubs.map(u => u());
-  };
+  $.end = _ => subs = [];
 
   return $;
 };
 
 export function computed(f) {
   let comb = store(),
-      calc = _ => (comps.push(calc), comb(f()), comps.pop());
+      calc = _ => {
+        if (~comps.indexOf(calc)) throw Error('Circular Dependency');
+        comps.push(calc);
+        comb(f());
+        comps.pop();
+      };
+
   calc();
   return comb;
 };

@@ -11,8 +11,8 @@ const authors = store([
     { name: 'agatha', age: 62 }
 ]);
 
-const youngAuthors = computed([authors], xs =>
-    xs.filter(author => author.age < 40)
+const youngAuthors = computed(() =>
+    authors().filter(author => author.age < 40)
 );
 
 authors(prev => [
@@ -64,10 +64,11 @@ See [index.d.ts](/index.d.ts) for type definitions.
 By default, stores created with vyce use a built-in deep clone function adapted from [klona](https://github.com/lukeed/klona). The default function is capable of cloning objects with JSON-valid data types. You may opt to use another deep clone utility by passing a second argument to `store` should you have the need to clone more complex data types. See below for an example using `klona/full`.
 
 ```js
-import { store } from 'vyce';
+import * as vyce from 'vyce';
 import { klona } from 'klona/full';
 
-const state = store({ name: 'denam' }, klona);
+vyce.setClone(klona);
+const state = vyce.store({ name: 'denam' });
 ```
 
 ### API
@@ -114,7 +115,7 @@ state(20); // logs `20`
 ```
 
 #### `store.end`
-Calling `end` will release all subscribers and clean up dependency stores, meaning subscriber functions will no longer be called upon updating the store.
+Calling `end` detach all subscribers from a store.
 
 ```js
 import { store, computed } from 'vyce';
@@ -122,18 +123,15 @@ import { store, computed } from 'vyce';
 const foo = store(10);
 const bar = store(20);
 
-const rum = computed([foo, bar], (x, y) => x + y); // 30
-const ham = computed([rum, bar], (x, y) => x + y); // 50
+const rum = computed(() => foo() + bar()); // 30
+const ham = computed(() => rum() + bar()); // 50
 
-rum.end(); // breaks all listeners (ham), and also stops listening to foo and bar
+rum.end(); // breaks all listeners (ham)
 
-bar(100); // does not affect rum, but *does* affect ham
-console.log(rum()); // logs `30`
-
-rum(0); // does not affect ham
-console.log(ham()); // logs `130`
+foo(20); // foo updates rum, but since ham is no longer listening to rum, it remains at 50
+ham(); // 50
 ```
 
 ## Credits
 
-Inspired by [flyd](https://github.com/paldepind/flyd), [klona](https://github.com/lukeed/klona), and [Svelte Stores](https://svelte.dev/docs#run-time-svelte-store).
+Inspired by [flyd](https://github.com/paldepind/flyd), [klona](https://github.com/lukeed/klona), and [trkl](https://github.com/jbreckmckye/trkl).

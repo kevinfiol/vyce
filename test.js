@@ -1,6 +1,6 @@
 import { suite, run } from 'flitch';
 import { strict as assert } from 'assert';
-import { store, computed } from './dist/vyce.js';
+import { store, computed, setClone } from './dist/vyce.js';
 
 const test = suite('Vyce Tests');
 
@@ -125,14 +125,12 @@ test('computed utility', () => {
 
     assert.equal(second(), 60);
 
-    // combined.end();
-    // t(100);
-    // assert.equal(combined(), 50); // combined is no longer subbed to t
+    t.end(); // detach all subscribers
+    t(100);
+    assert.equal(combined(), 50); // combined is no longer subbed to t
 
-    // combined(0);
-    // since combined broke all subs, it didn't update combined when we set to 0
-    // however, t is still sending updates to second
-    // assert.equal(second(), 150);
+    // second is also no longer subbed to t
+    assert.equal(second(), 60);
 });
 
 test('computed with many stores', () => {
@@ -193,7 +191,8 @@ test('defaultClone utility', () => {
 
 test('using a custom clone utility', () => {
     // this clone utility... doesn't clone at all! it just returns the same reference
-    const s = store({ boxes: { a: { v: 10 } } }, (x) => x);
+    setClone(x => x);
+    const s = store({ boxes: { a: { v: 10 } } });
     let tmp = s();
 
     // in this case, the references should be equal
@@ -208,7 +207,8 @@ test('using a custom clone utility', () => {
         return x;
     };
 
-    const t = store({ boxes: { a: { v: 10 } }, foo: [{ b: 20 }] }, shallowClone);
+    setClone(shallowClone);
+    const t = store({ boxes: { a: { v: 10 } }, foo: [{ b: 20 }] });
 
     tmp = t();
     assert.notEqual(tmp, t()); // only the top level obj is cloned
@@ -231,6 +231,43 @@ test('should not update if strictly equal', () => {
     assert.equal(count, 1);
     s(1);
     assert.equal(count, 2);
+});
+
+test('store.end test 2', () => {
+    const foo = store(10);
+    const bar = store(20);
+
+    const rum = computed(() => foo() + bar()); // 30
+    const ham = computed(() => rum() + bar()); // 50
+
+    assert.equal(rum(), 30);
+    assert.equal(ham(), 50);
+
+    rum.end(); // breaks all listeners (ham)
+
+    foo(20);
+    // since foo -> rum -/> ham, ham does not update, but rum does
+    assert.equal(ham(), 50);
+    assert.equal(rum(), 40);
+
+    // will update ham, and ham will *see* the latest rum value
+    bar(100);
+    assert.equal(ham(), bar() + rum());
+});
+
+test('detect circular dependencies', () => {
+    let error = false;
+    const a = store(10);
+
+    const b = computed(() => a() + 10);
+
+    try {
+        const c = computed(() => a(b()));
+    } catch (e) {
+        error = true;
+    }
+
+    assert.ok(error);
 });
 
 run();
