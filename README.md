@@ -61,14 +61,14 @@ Browser (ESM)
 
 See [index.d.ts](/index.d.ts) for type definitions.
 
-By default, stores created with vyce use a built-in deep clone function adapted from [klona](https://github.com/lukeed/klona). The default function is capable of cloning objects with JSON-valid data types. You may opt to use another deep clone utility by passing a second argument to `store` should you have the need to clone more complex data types. See below for an example using `klona/full`.
+By default, stores created with vyce use a built-in deep clone function adapted from [klona](https://github.com/lukeed/klona). The default function is capable of cloning objects with JSON-valid data types. You may opt to use another deep clone utility by using `setClone` should you have the need to clone more complex data types. See below for an example using `klona/full`.
 
 ```js
-import * as vyce from 'vyce';
+import { store, setClone } from 'vyce';
 import { klona } from 'klona/full';
 
-vyce.setClone(klona);
-const state = vyce.store({ name: 'denam' });
+setClone(klona);
+const state = store({ name: 'denam' });
 ```
 
 ### API
