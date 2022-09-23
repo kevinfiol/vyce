@@ -115,7 +115,7 @@ state(20); // logs `20`
 ```
 
 #### `store.end`
-Calling `end` detach all subscribers from a store.
+Calling `end` will detach all subscribers from a store.
 
 ```js
 import { store, computed } from 'vyce';
