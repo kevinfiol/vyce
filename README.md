@@ -73,7 +73,7 @@ const state = store({ name: 'denam' });
 
 ### API
 
-#### `store()`
+#### `store(value?)`
 ```js
 import { store } from 'vyce';
 
@@ -125,11 +125,22 @@ const bar = store(20);
 
 const rum = computed(() => foo() + bar()); // 30
 const ham = computed(() => rum() + bar()); // 50
+const logger = rum.sub(console.log); // logs `30`
 
-rum.end(); // breaks all listeners (ham)
+rum.end(); // breaks all listeners (ham, logger)
 
 foo(20); // foo updates rum, but since ham is no longer listening to rum, it remains at 50
 ham(); // 50
+```
+
+#### `computed`
+As demonstrated above, you can use `computed` to create stores derived from parent stores. Dependencies are tracked automatically. Creation of circular dependencies will throw an error.
+```js
+import { store, computed } from 'vyce';
+
+const a = store(10);
+const b = computed(() => a() + 10);
+const c = computed(() => a(b())); // throws `Circular Dependency` Error
 ```
 
 ## Credits
