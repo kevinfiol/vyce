@@ -1,6 +1,6 @@
 import { suite, run } from 'flitch';
 import { strict as assert } from 'assert';
-import { store, computed, setClone } from './dist/vyce.js';
+import { store, computed } from './dist/vyce.js';
 
 const test = suite('Vyce Tests');
 
@@ -191,7 +191,7 @@ test('defaultClone utility', () => {
 
 test('using a custom clone utility', () => {
     // this clone utility... doesn't clone at all! it just returns the same reference
-    setClone(x => x);
+    store.setClone(x => x);
     const s = store({ boxes: { a: { v: 10 } } });
     let tmp = s();
 
@@ -207,7 +207,7 @@ test('using a custom clone utility', () => {
         return x;
     };
 
-    setClone(shallowClone);
+    store.setClone(shallowClone);
     const t = store({ boxes: { a: { v: 10 } }, foo: [{ b: 20 }] });
 
     tmp = t();

@@ -2,11 +2,11 @@ lockfileVersion: 5.4
 
 specifiers:
   bundt: 1.1.5
-  flitch: 0.6.6
+  flitch: 0.7.2
 
 devDependencies:
   bundt: 1.1.5
-  flitch: 0.6.6
+  flitch: 0.7.2
 
 packages:
 
@@ -35,8 +35,8 @@ packages:
     resolution: {integrity: sha512-GpVkmM8vF2vQUkj2LvZmD35JxeJOLCwJ9cUkugyk2nuhbv3+mJvpLYYt+0+USMxE+oj+ey/lJEnhZw75x/OMcQ==}
     dev: true
 
-  /flitch/0.6.6:
-    resolution: {integrity: sha512-be7hoHjYXW8yOI/rTcsbibAKf0csoVw3PxYzadeX589CQ83ATN+fwWnNKJbK/4hEKiUb8fUIvfNHPGk2CfqvHw==}
+  /flitch/0.7.2:
+    resolution: {integrity: sha512-461IRs/djlgN40jdyr30XAQnC8Fly3UJYkArUz2mmV7MDKhjgllQKp0FgtS7QXVgmshXaCcH5i6P2M+sXn7pXQ==}
     engines: {node: '>=14.x'}
     dev: true
 

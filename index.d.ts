@@ -6,12 +6,15 @@ type ComputeMethod<T> = () => T;
 type Store<T> = {
     (): T;
     (value: T): void;
-    (setter: Setter): void;
+    (setter: Setter<T>): void;
 
     sub: (subscriber: Subscriber<T>, run: any) => Unsubscriber;
     end: () => void;
 };
 
-export function store<T>(init: T): Store<T>;
-export function setClone(clone: (value: T) => T): void;
-export function computed<T>(compute: ComputeMethod<any>): Store<T>;
+export interface store {
+    (init: T): Store<T>;
+    setClone: (clone: (value: unknown) => unknown) => void;
+};
+
+export function computed<T>(compute: ComputeMethod<unknown>): Store<T>;

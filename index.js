@@ -3,14 +3,14 @@ let comps = [],
       let out = v,
           k,
           tmp,
-          setProp = _ => out[k] = (tmp=v[k]) && typeof tmp == 'object' ? defaultClone(tmp) : tmp;
+          setProp = _ => out[k] = (tmp = v[k]) && typeof tmp === 'object' ? defaultClone(tmp) : tmp;
 
       if (Array.isArray(v)) {
         out = [], k = v.length;
         while (k--) setProp();
       }
 
-      if (v && Object.getPrototypeOf(v) == Object.prototype) {
+      if (v && Object.getPrototypeOf(v) === Object.prototype) {
         out = {};
         for (k in v) setProp();
       }
@@ -19,7 +19,7 @@ let comps = [],
     },
     clone = defaultClone;
 
-export const setClone = f => clone = f || defaultClone;
+store.setClone = f => clone = f || defaultClone;
 
 export function store(init) {
   let x = init,
@@ -32,7 +32,7 @@ export function store(init) {
         }
 
         if (y !== x) {
-          x = typeof y == 'function' ? y(clone(x)) : y;
+          x = typeof y === 'function' ? y(clone(x)) : y;
           let z = clone(x);
           for (let i = 0; i < subs.length; i++) subs[i](z);
         }
