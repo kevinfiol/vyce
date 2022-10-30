@@ -33,8 +33,7 @@ export function store(init) {
 
         if (y !== x) {
           x = typeof y === 'function' ? y(clone(x)) : y;
-          let z = clone(x);
-          for (let i = 0; i < subs.length; i++) subs[i](z);
+          for (let i = 0, z = clone(x); i < subs.length; i++) subs[i](z);
         }
       };
 
