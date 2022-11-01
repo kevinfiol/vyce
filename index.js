@@ -12,7 +12,14 @@ let comps = [],
 
       if (v && Object.getPrototypeOf(v) === Object.prototype) {
         out = {};
-        for (k in v) setProp();
+        for (k in v) k === '__proto__'
+          ? Object.defineProperty(out, k, {
+            value: defaultClone(v[k]),
+            configurable: true,
+            enumerable: true,
+            writable: true
+          })
+          : setProp();
       }
 
       return out;

@@ -270,4 +270,24 @@ test('detect circular dependencies', () => {
     assert.ok(error);
 });
 
+test('prototype pollution with defaultClone', () => {
+    // https://github.com/lukeed/klona/blob/master/test/suites/pollution.js
+    const payload = '{"__proto__":{"a0":true}}';
+    const input = JSON.parse(payload);
+
+    // reset clone
+    store.setClone();
+    const s = store(input);
+    const output = s();
+
+    assert.equal(JSON.stringify(output), payload);
+
+    assert.notEqual(new Object()['a0'], true, 'Safe Object');
+    assert.notEqual(Object.create(null)['a0'], true, 'Safe dictionary');
+    assert.notEqual(Object.create(Object.prototype)['a0'], true, 'Safe prototype');
+
+    assert.notEqual(input['a0'], true, 'Safe input');
+    assert.notEqual(output['a0'], true, 'Safe output');
+});
+
 run();
