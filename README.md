@@ -78,7 +78,7 @@ state({ age: 18 });
 // or pass a function to set a value based on the previous value
 state(prev => ({ ...prev, name: 'catiua' }));
 
-// store values are lazy-loaded; the function above is not run until we attempt to retrieve `state()`
+// store values use lazy evaluation; the function above is not run until the line below
 state(); // `{ age: 18, name: 'catiua' }`
 ```
 
