@@ -12,8 +12,5 @@ type Store<T> = {
     end: () => void;
 };
 
-export interface store {
-    (init: T): Store<T>;
-};
-
+export function store<T>(init: T): Store<T>;
 export function computed<T>(compute: ComputeMethod<unknown>): Store<T>;
