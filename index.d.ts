@@ -14,7 +14,6 @@ type Store<T> = {
 
 export interface store {
     (init: T): Store<T>;
-    setClone: (clone: (value: unknown) => unknown) => void;
 };
 
 export function computed<T>(compute: ComputeMethod<unknown>): Store<T>;

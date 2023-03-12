@@ -1,51 +1,36 @@
 let comps = [],
-    defaultClone = v => {
-      let out = v,
-          k,
-          tmp,
-          setProp = _ => out[k] = (tmp = v[k]) && typeof tmp === 'object' ? defaultClone(tmp) : tmp;
-
-      if (Array.isArray(v)) {
-        out = [], k = v.length;
-        while (k--) setProp();
-      }
-
-      if (v && Object.getPrototypeOf(v) === Object.prototype) {
-        out = {};
-        for (k in v) k === '__proto__'
-          ? Object.defineProperty(out, k, {
-            value: defaultClone(v[k]),
-            configurable: true,
-            enumerable: true,
-            writable: true
-          })
-          : setProp();
-      }
-
-      return out;
-    },
-    clone = defaultClone;
-
-store.setClone = f => clone = f || defaultClone;
+  isFn = x => typeof x === 'function';
 
 export function store(init) {
   let x = init,
       subs = [],
-      $ = function (y) {
+      todo = [],
+      queue = calc => isFn(calc) ? (todo.push(calc)) : (todo = [calc]),
+      runQueue = _ => {
+        let i, tmp;
+
+        for (i = 0; i < todo.length; i++) {
+          tmp = todo[i];
+          x = isFn(tmp) ? tmp(x) : tmp;
+        }
+
+        if (todo.length) todo = [];
+      },
+      $store = function (y) {
         if (!arguments.length) {
           let comp = comps[comps.length - 1];
-          comp && $.sub(comp, false);
-          return clone(x);
+          comp && $store.sub(comp, false);
+          runQueue();
+          return x;
         }
 
-        if (y !== x) {
-          x = typeof y === 'function' ? y(clone(x)) : y;
-          for (let i = 0, z = clone(x); i < subs.length; i++) subs[i](z);
-        }
+        queue(y);
+        if (subs.length) runQueue();
+        for (let i = 0; i < subs.length; i++) subs[i](x);
       };
 
-  $.sub = (f, run = true) => {
-    run && f(clone(x));
+  $store.sub = (f, run = true) => {
+    run && f(x);
     !~subs.indexOf(f) && subs.push(f);
     return _ => {
       let idx = subs.indexOf(f);
@@ -53,9 +38,9 @@ export function store(init) {
     };
   };
 
-  $.end = _ => subs = [];
+  $store.end = _ => subs = [];
 
-  return $;
+  return $store;
 };
 
 export function computed(f) {

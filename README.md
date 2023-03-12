@@ -61,18 +61,6 @@ Browser (ESM)
 
 See [index.d.ts](/index.d.ts) for type definitions.
 
-By default, stores created with vyce use a built-in deep clone function adapted from [klona](https://github.com/lukeed/klona). The default function is capable of cloning objects with JSON-valid data types. You may opt to use another deep clone utility across all new stores by initially calling `store.setClone`. See below for an example using `klona/full`.
-
-```js
-import { store } from 'vyce';
-import { klona } from 'klona/full';
-
-store.setClone(klona);
-
-// all new stores will now use `klona/full` internally
-const state = store({ name: 'denam' });
-```
-
 ### API
 
 #### `store(value?)`
@@ -90,6 +78,7 @@ state({ age: 18 });
 // or pass a function to set a value based on the previous value
 state(prev => ({ ...prev, name: 'catiua' }));
 
+// store values are lazy-loaded; the function above is not run until we attempt to retrieve `state()`
 state(); // `{ age: 18, name: 'catiua' }`
 ```
 
@@ -105,7 +94,7 @@ unsub();
 state(30); // does not log anything
 ```
 
-Setting a store will only update its value and run subscribers if the new value is different than the old value. Internally, this is determined with the `!==` operator. Also note: by default, the subscriber function is called once upon subscribing. Pass a falsey value as a second argument to `store.sub` to disable the initial call.
+By default, the subscriber function is called once upon subscribing. Pass a falsey value as a second argument to `store.sub` to disable the initial call.
 
 ```js
 import { store } from 'vyce';
